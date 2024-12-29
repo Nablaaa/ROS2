@@ -7,8 +7,10 @@ class NumberPublisherNode(Node):
     def __init__(self):
         super().__init__('publish_number')
         
-        self.number = 42
-        self.number_publisher = self.create_publisher(Int64, 'number', 10)
+        self.number = 2
+
+        # publish to topic name 'number', with message type Int64 and queue size 10
+        self.number_publisher = self.create_publisher(Int64, 'number', 10) 
         self.float_publisher = self.create_publisher(Float64, 'number_float', 10)
 
         self.timer = self.create_timer(0.5, self.publish_number)
