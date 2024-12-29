@@ -2,7 +2,8 @@
 import rclpy
 from rclpy.node import Node
 
-class MyCustomNode(Node): # MODIFY NAME
+class MyCustomNode(Node): # MODIFY NAME 
+                          # AND add to setup.py
     def __init__(self):
         super().__init__('my_node_name') # MODIFY NAME
 
