@@ -1,4 +1,8 @@
 # ROS 2 Workspace
+![Turtlesim](docs/media/turtlesim.png)
+
+***
+
 This is a collection from src files that I have written with the help of a) ROS Documentation b) YouTube and c) "ROS 2 from Scratch" book.
 
 ## Requirements
