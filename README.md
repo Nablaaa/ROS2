@@ -55,3 +55,15 @@ source ~/.bashrc
 # there must be a line:
 source ~/path/to/ros2_ws/install/setup.bash
 ```
+
+
+
+## Coding Understanding
+- interfaces are imported as modules
+- inherit from Node class to get ROS Node functionality, e.g.
+    - create publisher
+    - create subscriber
+    - create service
+    - create client
+    - create timer
+    - ...
