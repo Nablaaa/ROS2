@@ -3,7 +3,7 @@
 
 ***
 
-This is a collection from src files that I have written with the help of a) ROS Documentation b) YouTube and c) "ROS 2 from Scratch" book.
+This is a collection from src files that I have written with the help of a) [ROS Documentation](https://docs.ros.org/en/jazzy/Tutorials.html) b) [YouTube](https://www.youtube.com/@RoboticsBackEnd) and c) ["ROS 2 from Scratch" book](https://www.amazon.de/ROS-Scratch-started-robotics-applications/dp/B0DJCFC29Q?source=ps-sl-shoppingads-lpcontext&ref_=fplfs&psc=1&smid=A3JWKAKR8XB7XF&language=de_DE).
 
 ## Requirements
 1. Ubuntu 24.04
@@ -93,3 +93,18 @@ and so on. See [number_publisher.py](src/my_py_pkg/my_py_pkg/number_publisher.py
 - package.xml: dependencies have to be added here
     - so for every import, there has to be a new dependency
     - see rclpy for example (python)
+
+
+## Dummy Publisher and Subscriber
+Sometimes, when people collaborate, one writes the publisher and one the subscriber node. Then it make sense that the communication is tested with
+a dummy subscriber (for the publisher node) and a dummy publisher (for the subscriber node). This can be done with the following command line commands:
+
+```bash
+# publish for the subscriber
+ros2 topic pub -r frequency /topic_name topic_type                   "data"
+ros2 topic pub -r 4.1       /number     example_interfaces/msg/Int64 "{data: 5}"
+
+# subscribe for the publisher
+ros2 topic echo /topic_name
+ros2 topic echo /number
+```
