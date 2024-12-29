@@ -40,7 +40,7 @@ touch my_first_node.py
 # make it excecutive VERY IMPORTANT
 chmod +x my_first_node.py
 ```
-7. Write the code for the node
+7. Write the code for the node, add the reference to the setup.py and load dependencies (if necessary) in package.xml
 8. Build everything in development mode
 ```bash
 colcon build --symlink-install 
@@ -67,3 +67,25 @@ source ~/path/to/ros2_ws/install/setup.bash
     - create client
     - create timer
     - ...
+
+
+## ROS 2 interfaces
+Interfaces are something like the syntax of the messages. They can be seen in
+```bash
+ros2 interface show example_interfaces/<name>
+```
+and can be reached in python via 
+```python
+from example_interfaces.srv import AddTwoInts
+from example_interfaces.msg import Float64
+```
+and so on. See [number_publisher.py](src/my_py_pkg/my_py_pkg/number_publisher.py) for an example.
+
+
+## setup.py and package.xml
+- setup.py: new nodes have to be added to the entry_points dictionary
+    - so for every python class, there has to be a new entry
+    - the name of the entry is the name of the node
+- package.xml: dependencies have to be added here
+    - so for every import, there has to be a new dependency
+    - see rclpy for example (python)
