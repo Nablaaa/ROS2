@@ -126,3 +126,80 @@ ros2 bag play bag_directory/bagname
 ros2 bag play -h
 ```
 and then the bag is publishing the topics in the same way as the original nodes. So other nodes can subscribe to them.
+
+## Interfaces
+
+### Existing Interfaces
+**DO NOT REINVENT THE WHEEL!**
+Interfaces, also called messages, is the syntax of the data that is sent between nodes. They can be listed with
+```bash
+ros2 interface list
+```
+or by visiting the [ROS 2 documentation](https://github.com/ros2/common_interfaces). **They should be used to not reinvent the wheel!**
+Install packages with
+```bash
+sudo apt install ros-<distro>-<package>
+
+# example for sensor_msgs package
+sudo apt install ros-jazzy-sensor-msgs
+
+# source again
+source ~/.bashrc
+
+# add package to package.xml
+# import package in python
+```
+
+### Custom Interfaces
+Only if I do not find exactly what I need, I should create a custom interface. This process is not complicated and it is always the same process.
+
+
+#### Setup Process
+1. Create a new package (normally called robotname`_interfaces`)
+```bash
+cd src/
+ros2 pkg create my_robot_interfaces --build-type ament_cmake
+```
+2. Remove the src and include folders and create a new folder called msg
+```bash
+cd my_robot_interfaces
+rm -r src/ include/
+mkdir msg
+```
+3. Modify package.xml. After `buildtool_depend ament_cmake buildtool depend` add the following lines
+```xml
+<build_depend>rosidl_default_generators</build_depend>
+<exec_depend>rosidl_default_runtime</exec_depend>
+<member_of_group>rosidl_interface_packages</member_of_group>
+```
+4. Modify CMakeLists.txt. After `find_package (ament_cmake REQUIRED)` and before `ament_package` add the following lines
+```cmake
+find_package(rosidl_default_generators REQUIRED)
+rosidl_generate_interfaces(${PROJECT_NAME}
+  # here the name of the custom interface is added later
+)
+ament_export_dependencies(rosidl_default_runtime)
+```
+5. Remove `if(BUILD_TESTING)` block from CMakelists.txt
+
+
+#### Building Interfaces
+The setup process is finished (and has to be done only once) and now messages (interfaces) can be added.
+
+Rules:
+- use ThisTypeOfWritingForTheMessageName
+- do not write "Msg" or "Interface" to avoid redundancy
+- finish the name with ".msg"
+
+```bash
+cd src/my_robot_interfaces/msg/
+touch HardwareStatus.msg
+```
+
+The content of a .msg file are listed [here](https://docs.ros.org/en/rolling/Concepts/Basic/About-Interfaces.html#field-types) (e.g. bool, float64, ...) and other existing interfaces (e.g. geometry_msgs/Twist - notice: it is not "geometry_msgs/msg/Twist"). See an example [here](src/my_robot_interfaces/msg/HardwareStatus.msg).
+
+Now the interface has to be added to the CMakeLists.txt file. After `rosidl_generate_interfaces(${PROJECT_NAME}` add the following line
+```cmake
+"msg/HardwareStatus.msg"
+```
+Then it is time to save and build the files with colcon build
