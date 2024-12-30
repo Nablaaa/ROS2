@@ -108,3 +108,21 @@ ros2 topic pub -r 4.1       /number     example_interfaces/msg/Int64 "{data: 5}"
 ros2 topic echo /topic_name
 ros2 topic echo /number
 ```
+
+## Recording and Replaying topic information
+Sometimes, it is important to record nodes for later analysis or to reuse the information for follow up experiments. One example is, to record outdoor data of a truck ride, with rain and fog. Since it is not rainy and foggy everyday, it is helpful to reuse this information. In ROS this is done with **bags**. To record a node, use the following command:
+```bash
+# all nodes
+ros2 bag record -a
+
+# specific nodes
+ros2 bag record /topicname -o bagname
+```
+This creates a directory "bagname" in which the data is recorded as a .mcap file, as well as the metadata.yaml file. To play the bag, use the following command:
+```bash
+ros2 bag play bag_directory/bagname
+
+# more information
+ros2 bag play -h
+```
+and then the bag is publishing the topics in the same way as the original nodes. So other nodes can subscribe to them.
