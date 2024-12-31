@@ -203,3 +203,16 @@ Now the interface has to be added to the CMakeLists.txt file. After `rosidl_gene
 "msg/HardwareStatus.msg"
 ```
 Then it is time to save and build the files with colcon build
+When everything worked, then you can find the interface with
+```bash
+ros2 interface show my_robot_interfaces/msg/HardwareStatus
+```
+
+To use this interface in the python code, add the pacakge to the dependencies in the package.xml file with
+```xml
+<depend>my_robot_interfaces</depend>
+```
+and import the interace as usual with
+```python
+from my_robot_interfaces.msg import HardwareStatus
+```
