@@ -73,17 +73,6 @@ source ~/path/to/ros2_ws/install/setup.bash
     - ...
 
 
-## ROS 2 interfaces
-Interfaces are something like the syntax of the messages. They can be seen in
-```bash
-ros2 interface show example_interfaces/<name>
-```
-and can be reached in python via 
-```python
-from example_interfaces.srv import AddTwoInts
-from example_interfaces.msg import Float64
-```
-and so on. See [number_publisher.py](src/my_py_pkg/my_py_pkg/number_publisher.py) for an example.
 
 
 ## setup.py and package.xml
@@ -128,6 +117,16 @@ ros2 bag play -h
 and then the bag is publishing the topics in the same way as the original nodes. So other nodes can subscribe to them.
 
 ## Interfaces
+Interfaces are something like the syntax of the messages. They can be seen in
+```bash
+ros2 interface show example_interfaces/<name>
+```
+and can be reached in python via 
+```python
+from example_interfaces.srv import AddTwoInts
+from example_interfaces.msg import Float64
+```
+and so on. See [number_publisher.py](src/my_py_pkg/my_py_pkg/number_publisher.py) for an example.
 
 ### Existing Interfaces
 **DO NOT REINVENT THE WHEEL!**
