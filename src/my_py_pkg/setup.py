@@ -23,6 +23,8 @@ setup(
             "first_node = my_py_pkg.my_first_node:main",
             "number_publisher = my_py_pkg.number_publisher:main",
             "number_counter = my_py_pkg.number_counter:main",
+            "number_counter_srv = my_py_pkg.number_counter_srv:main",
+            
         ],
     },
 )
