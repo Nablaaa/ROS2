@@ -159,7 +159,7 @@ Only if I do not find exactly what I need, I should create a custom interface. T
 cd src/
 ros2 pkg create my_robot_interfaces --build-type ament_cmake
 ```
-2. Remove the src and include folders and create a new folder called msg
+2. Remove the src and include folders and create a new folder called msg (or srv)
 ```bash
 cd my_robot_interfaces
 rm -r src/ include/
@@ -187,8 +187,9 @@ The setup process is finished (and has to be done only once) and now messages (i
 
 Rules:
 - use ThisTypeOfWritingForTheMessageName
-- do not write "Msg" or "Interface" to avoid redundancy
-- finish the name with ".msg"
+- do not write "Msg" or "Interface" to avoid redundancy (or "Srv")
+- finish the name with ".msg" or ".srv"
+- with services, use in best case a name like "Verb"+"Obj" (e.g. TriggerSomething, ActivateMotor,...)
 
 ```bash
 cd src/my_robot_interfaces/msg/
@@ -196,6 +197,14 @@ touch HardwareStatus.msg
 ```
 
 The content of a .msg file are listed [here](https://docs.ros.org/en/rolling/Concepts/Basic/About-Interfaces.html#field-types) (e.g. bool, float64, ...) and other existing interfaces (e.g. geometry_msgs/Twist - notice: it is not "geometry_msgs/msg/Twist"). See an example [here](src/my_robot_interfaces/msg/HardwareStatus.msg).
+
+For Services, there is an extra logic, which is:
+- write request on top
+- add three dashes (---) to separate request and response
+    - do this ALWAYS, also when request or response is empty
+- write response below the dashes
+
+An example for a service is [here](src/my_robot_interfaces/srv/ResetCounter.srv).
 
 Now the interface has to be added to the CMakeLists.txt file. After `rosidl_generate_interfaces(${PROJECT_NAME}` add the following line
 ```cmake

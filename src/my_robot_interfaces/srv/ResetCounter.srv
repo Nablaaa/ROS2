@@ -1,0 +1,8 @@
+# use snake_case convention
+# underscore between words
+# all letters lowercase
+# no spaces
+int64 reset_value
+---
+bool success
+string message
