@@ -215,3 +215,14 @@ and import the interace as usual with
 ```python
 from my_robot_interfaces.msg import HardwareStatus
 ```
+
+## Services
+Services contain of Servers and Clients and are used to request and provide information. The server is the provider and the client is the requester. This concept is used when I want to perform quick computations on request or do actions on demand (e.g. enabling/disabling a sensor).
+Services are:
+- defined by name and interface
+    - name must start with letter
+    - interface must contain request and response
+    - Client and Server
+- having a unique server for each service
+- servers do not have information about the client (besides the ones in the request)
+- clients do not have information about the server (besides the ones in the response)
