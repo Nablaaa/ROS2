@@ -45,8 +45,9 @@ touch my_first_node.py
 chmod +x my_first_node.py
 ```
 7. Write the code for the node, add the reference to the setup.py and load dependencies (if necessary) in package.xml
-8. Build everything in development mode
+8. Bd everything in development mode
 ```bash
+cd ~/ros2_ws
 colcon build --symlink-install 
 
 # or optional
