@@ -46,7 +46,7 @@ class NumberCounterNode(Node):
         # and look at rqt_graph
 
 
-    def callback_reset_counter(self, request: ResetCounter.request,response: ResetCounter.Response):
+    def callback_reset_counter(self, request: ResetCounter.Request,response: ResetCounter.Response):
         if request.reset_value <0:
             response.success = False
             response.message = "Reset value cannot be negative"
