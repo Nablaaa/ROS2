@@ -1,7 +1,7 @@
 #!/usr/bin/env python3.12
 import rclpy
 from rclpy.node import Node
-from turtlesim_msgs.msg import Pose
+from turtlesim.msg import Pose
 
 
 # DO NOT FORGET TO MAKE IT EXECUTABLE
