@@ -21,6 +21,7 @@ setup(
     entry_points={
         'console_scripts': [
             "run_circles = turtle_controller.run_circles:main",
+            "teleport_turtle = turtle_controller.teleport_turtle:main",
 
         ],
     },
