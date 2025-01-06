@@ -264,3 +264,15 @@ def DefineCallbackFunction(self, future):
 ```
 
 Make sure to call the function for the request after building the Node. Example is [here](src/my_py_pkg/my_py_pkg/reset_counter_client.py).
+
+In the [turtle example](src/turtle_controller/turtle_controller/teleport_turtle.py) the service call is within a pose_subscriber which makes it being called evrytime the turtle moves to a certain position (so the node is permanently active and can do tasks on demand).
+
+It is also possible to call the service from the command line with
+```bash
+ros2 service call /service_name interfacename "{request_name: 5}"
+```
+Here it helps to use autocomplete to get the right service name and interface name. The request_name is defined in the interface. E.g.
+```bash
+ros2 service call /reset_counter my_robot_interfaces/srv/ResetCounter "{reset_value: 5}"
+```
+with the "reset_value" defined in the [ResetCounter.srv](src/my_robot_interfaces/srv/ResetCounter.srv) interface.
