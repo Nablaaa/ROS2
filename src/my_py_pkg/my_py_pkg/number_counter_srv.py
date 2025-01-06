@@ -53,13 +53,15 @@ class NumberCounterNode(Node):
 
         elif request.reset_value > self.counter_int:
             response.success = False
-            response.message = "Reset value cannot be greater than the current value"
+            response.message = "Reset value cannot be greater than the current value. Current value is: {0}".format(self.counter_int) + " and the requested value is: {0}".format(request.reset_value)
 
         else:
             self.counter_int = request.reset_value
             self.counter_float = 0.0
             response.success = True
             response.message = "Both counters reset."
+
+            self.get_logger().info('Counter reset')
 
             self.get_logger().info('Counter int: {0}'.format(self.counter_int))
             self.get_logger().info('Counter float: {0}'.format(self.counter_float))
