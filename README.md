@@ -236,3 +236,31 @@ Services are:
 - having a unique server for each service
 - servers do not have information about the client (besides the ones in the request)
 - clients do not have information about the server (besides the ones in the response)
+
+**Make sure to always request/response to the same service name**
+
+### Client Logic
+1. Create a client object
+2. Make a function for the request. Wait for the service to be available
+3. Formulate request based on the interface 
+```python
+from my_robot_interfaces.srv import InterfaceName
+request = InterfaceName.Request()
+request.data = 5
+```
+4. Send the request and wait for the response
+```python
+future = client_name.call_async(request)
+future.add_done_callback(self.DefineCallbackFunction)
+```
+5. Define the callback function
+```python
+def DefineCallbackFunction(self, future):
+    try:
+        response = future.result()
+        self.get_logger().info(response.data)
+    except Exception as e:
+        self.get_logger().info('Service call failed %r' % (e,))
+```
+
+Make sure to call the function for the request after building the Node. Example is [here](src/my_py_pkg/my_py_pkg/reset_counter_client.py).
