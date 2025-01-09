@@ -29,11 +29,12 @@ class RunCircles(Node):
 
 
         self.send_velocity = True
+        self.prev_x = 0.0
 
         self.get_logger().info(f"Please toggle active state to start the turtle.")
 
 
-    def ControlTurtle(self, msg: Pose):
+    def ControlTurtle(self, pose: Pose):
         while not self.client_pen.wait_for_service(timeout_sec=1.0):
             self.get_logger().warn('service not available, waiting again...')
         
@@ -42,34 +43,56 @@ class RunCircles(Node):
         # self.get_logger().info('Position: x={0}, y={1}, theta={2}'.format(msg.x, msg.y, msg.theta))
 
         # get position
-        x = msg.x
+        x = pose.x
 
 
         vel_msg = Twist()
         vel_msg.linear.x = 1.0
         vel_msg.angular.z = 1.0
 
-        request = SetPen.Request()
-        request.r = 0
-        request.g = 255
-        request.b = 0
-        request.width = 2
 
-        if x > self.screen_center_x:
+        
+
+        if x < self.screen_center_x and self.prev_x >= self.screen_center_x:
+            self.prev_x = x
+
+            self.call_vel(1.0, 1.0)
+            self.call_pen(0, 255, 0, 2)
+        
+
+        if x > self.screen_center_x and self.prev_x <= self.screen_center_x:
+            self.prev_x = x
             vel_msg.linear.x = 2.0
             vel_msg.angular.z = 2.0
 
+            self.call_vel(2.0, 2.0)
+            self.call_pen(255, 255, 255, 5)
 
-            request.r = 255
-            request.g = 255
-            request.b = 255
-            request.width = 5
+        if self.send_velocity:
+            self.pub_velocity.publish(vel_msg)
+
+
+
+
+    def call_vel(self, linear, angular):
+        vel_msg = Twist()
+        vel_msg.linear.x = linear
+        vel_msg.angular.z = angular
+
+        if self.send_velocity:
+            self.pub_velocity.publish(vel_msg)
+
+
+    def call_pen(self, r, g, b, width):
+        request = SetPen.Request()
+        request.r = r
+        request.g = g
+        request.b = b
+        request.width = width
 
         future = self.client_pen.call_async(request)
         future.add_done_callback(self.callback_set_pen)
 
-        if self.send_velocity:
-            self.pub_velocity.publish(vel_msg)
 
     def callback_set_pen(self, future):
         try:
