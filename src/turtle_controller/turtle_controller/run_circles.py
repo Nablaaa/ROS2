@@ -35,23 +35,16 @@ class RunCircles(Node):
 
 
     def ControlTurtle(self, pose: Pose):
+
         while not self.client_pen.wait_for_service(timeout_sec=1.0):
             self.get_logger().warn('service not available, waiting again...')
         
-
-        # print position
-        # self.get_logger().info('Position: x={0}, y={1}, theta={2}'.format(msg.x, msg.y, msg.theta))
-
         # get position
         x = pose.x
-
 
         vel_msg = Twist()
         vel_msg.linear.x = 1.0
         vel_msg.angular.z = 1.0
-
-
-        
 
         if x < self.screen_center_x and self.prev_x >= self.screen_center_x:
             self.prev_x = x
@@ -59,7 +52,6 @@ class RunCircles(Node):
             self.call_vel(1.0, 1.0)
             self.call_pen(0, 255, 0, 2)
         
-
         if x > self.screen_center_x and self.prev_x <= self.screen_center_x:
             self.prev_x = x
             vel_msg.linear.x = 2.0
@@ -70,8 +62,6 @@ class RunCircles(Node):
 
         if self.send_velocity:
             self.pub_velocity.publish(vel_msg)
-
-
 
 
     def call_vel(self, linear, angular):
