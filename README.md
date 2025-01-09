@@ -211,7 +211,7 @@ Now the interface has to be added to the CMakeLists.txt file. After `rosidl_gene
 ```cmake
 "msg/HardwareStatus.msg"
 ```
-Then it is time to save and build the files with colcon build. Source afterward.
+Then it is time to save and build the files with colcon build. `Source afterward`.
 When everything worked, then you can find the interface with
 ```bash
 ros2 interface show my_robot_interfaces/msg/HardwareStatus
