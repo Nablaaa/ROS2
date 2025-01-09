@@ -1,0 +1,5 @@
+# active_state can be "on" or "off"
+string active_state
+---
+bool success
+string message
