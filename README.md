@@ -276,3 +276,13 @@ Here it helps to use autocomplete to get the right service name and interface na
 ros2 service call /reset_counter my_robot_interfaces/srv/ResetCounter "{reset_value: 5}"
 ```
 with the "reset_value" defined in the [ResetCounter.srv](src/my_robot_interfaces/srv/ResetCounter.srv) interface.
+
+
+## Actions
+Actions are a more complex version of services. They are used when the request takes a long time to process and the client needs to know the status of the request. This is done with feedback and result. The client can cancel the request at any time. The server can send feedback to the client at any time. The client can send a request to the server at any time. The server can send a result to the client at any time.
+
+A simple example is downloading multiple files from google at the same time. Google tells me the progress, I can cancel single downloads without interrupting others and I can add more downloads if necessary.
+
+So if I have a task that executes fast, than I use a service. If I have a task that takes long, where I want to have feedback and where I want to be able to cancel at any moment, I use an action.
+
+(Under the hood, actions are using services for request/goal and response/result and topics for feedback during the process)
