@@ -160,7 +160,7 @@ Only if I do not find exactly what I need, I should create a custom interface. T
 cd src/
 ros2 pkg create my_robot_interfaces --build-type ament_cmake
 ```
-2. Remove the src and include folders and create a new folder called msg (or srv)
+2. Remove the src and include folders and create a new folder called msg (or srv/action)
 ```bash
 cd my_robot_interfaces
 rm -r src/ include/
@@ -188,8 +188,8 @@ The setup process is finished (and has to be done only once) and now messages (i
 
 Rules:
 - use ThisTypeOfWritingForTheMessageName
-- do not write "Msg" or "Interface" to avoid redundancy (or "Srv")
-- finish the name with ".msg" or ".srv"
+- do not write "Msg" or "Interface" to avoid redundancy (or "Srv" or "Action")
+- finish the name with ".msg" or ".srv" or ".action"
 - with services, use in best case a name like "Verb"+"Obj" (e.g. TriggerSomething, ActivateMotor,...)
 
 ```bash
@@ -205,7 +205,17 @@ For Services, there is an extra logic, which is:
     - do this ALWAYS, also when request or response is empty
 - write response below the dashes
 
-An example for a service is [here](src/my_robot_interfaces/srv/ResetCounter.srv).
+For Actions, there is an extra logic, which is:
+- write goal on top
+- add three dashes (---) to separate goal and result
+    - do this ALWAYS, also when goal or result is empty
+- write result below the dashes
+- add three dashes (---) to separate result and feedback
+    - do this ALWAYS, also when feedback is empty
+- write feedback below the dashes
+
+
+An example for a service is [here](src/my_robot_interfaces/srv/ResetCounter.srv). An example for an action is [here](src/my_robot_interfaces/action/CountUntil.action).
 
 Now the interface has to be added to the CMakeLists.txt file. After `rosidl_generate_interfaces(${PROJECT_NAME}` add the following line
 ```cmake
@@ -286,3 +296,5 @@ A simple example is downloading multiple files from google at the same time. Goo
 So if I have a task that executes fast, than I use a service. If I have a task that takes long, where I want to have feedback and where I want to be able to cancel at any moment, I use an action.
 
 (Under the hood, actions are using services for request/goal and response/result and topics for feedback during the process)
+
+Similar to the other processes, the actions need an interface and they have a name. There can be only one action-server per name, but the action-clients can send many goals to this action-server.
