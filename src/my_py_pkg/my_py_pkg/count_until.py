@@ -10,12 +10,13 @@ from my_robot_interfaces.action import CountUntil # has CountUntil.Goal, .Feedba
 class CountUntilServer(Node):
     def __init__(self):
         super().__init__('count_until_server')
+        self.get_logger().info('Count until server is up')
         self.count_until_server = ActionServer(
             self,
             CountUntil,
             'count_until',
             goal_callback=self.goal_callback, # received goals are processed
-            excecute_callback=self.execute_callback) # and if accepted, than excecution happens here
+            execute_callback=self.execute_callback) # and if accepted, than excecution happens here
         
 
     def goal_callback(self, goal_request: CountUntil.Goal):
