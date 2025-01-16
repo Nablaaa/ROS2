@@ -25,7 +25,8 @@ setup(
             "number_counter = my_py_pkg.number_counter:main",
             "number_counter_srv = my_py_pkg.number_counter_srv:main",
             "reset_counter = my_py_pkg.reset_counter_client:main", 
-            "count_until = my_py_pkg.count_until:main",           
+            "count_until = my_py_pkg.count_until:main",    
+            "count_until_action_client = my_py_pkg.count_until_client:main",       
         ],
     },
 )
