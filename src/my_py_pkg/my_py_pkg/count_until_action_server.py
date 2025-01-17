@@ -81,13 +81,15 @@ class CountUntilServer(Node):
         self.get_logger().info('Received cancel request')
 
         # if the current number is below target number / 2 than it is not possible to cancel
-        if goal_handle.is_active:
-            if goal_handle.feedback_msg.current_number < goal_handle.request.target_number / 2:
-                self.get_logger().info('Cancel request rejected, because a very important process is running')
-                return CancelResponse.REJECT
-            else:
-                self.get_logger().info('Cancel request accepted')
-                return CancelResponse.ACCEPT # this will set "goal_handle.is_cancel_requested" to True
+        # if goal_handle.is_active:
+            
+            # do NOT confuse feedback with feedback_msg
+            # if goal_handle.feedback.current_number < goal_handle.request.target_number / 2:
+            #     self.get_logger().info('Cancel request rejected, because a very important process is running')
+            #     return CancelResponse.REJECT
+            # else:
+        self.get_logger().info('Cancel request accepted')
+        return CancelResponse.ACCEPT # this will set "goal_handle.is_cancel_requested" to True
 
     
 

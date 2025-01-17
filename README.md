@@ -298,3 +298,26 @@ So if I have a task that executes fast, than I use a service. If I have a task t
 (Under the hood, actions are using services for request/goal and response/result and topics for feedback during the process)
 
 Similar to the other processes, the actions need an interface and they have a name. There can be only one action-server per name, but the action-clients can send many goals to this action-server.
+
+## Multi-Threaded Executor
+In the Action-Cancel scenario, a "normal" spinning node would perform the "goal" callback before the spin continues. So in this time, the callback for "canceling" will not be active and it would be not possible to receive the request for canceling an action. The ROS 2 approach of solving this is a multi-threaded executor. An example is [here](src/my_py_pkg/my_py_pkg/count_until_action_server.py).
+
+Important things to modify are:
+```python
+# import multithread related libraries
+from rclpy.executors import MultiThreadedExecutor
+from rclpy.action import CancelResponse
+from rclpy.callback_groups import ReentrantCallbackGroup
+
+
+# make node spin in a multi-threaded way
+rclpy.spin(node, executor=MultiThreadedExecutor()) 
+
+
+# Add to ActionServer
+cancel_callback=self.cancel_callback
+callback_group=ReentrantCallbackGroup()
+
+# write cancel_callback with
+return CancelResponse.REJECT # or ACCEPT
+```

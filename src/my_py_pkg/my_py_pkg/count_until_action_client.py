@@ -28,6 +28,14 @@ class CountUntilClient(Node):
             ).add_done_callback( # than add a callback to it
                 self.goal_response_callback
                 )
+        
+    def cancel_goal(self):
+        """
+        Define a function to cancel the goal
+        This function can be called from anywhere
+        """
+        self.get_logger().info("Send a cancel request")
+        self.goal_handle.cancel_goal_async()
 
     def goal_response_callback(self, future):
         """
@@ -53,6 +61,9 @@ class CountUntilClient(Node):
     def goal_feedback_callback(self, feedback_msg):
         number = feedback_msg.feedback.current_number
         self.get_logger().info(f'Feedback: {number}')
+
+        if number > 3:
+            self.cancel_goal()
 
     def goal_result_callback(self, future):
         status = future.result().status
