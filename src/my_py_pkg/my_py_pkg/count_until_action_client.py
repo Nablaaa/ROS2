@@ -62,7 +62,7 @@ class CountUntilClient(Node):
         number = feedback_msg.feedback.current_number
         self.get_logger().info(f'Feedback: {number}')
 
-        if number > 3:
+        if number > 2:
             self.cancel_goal()
 
     def goal_result_callback(self, future):

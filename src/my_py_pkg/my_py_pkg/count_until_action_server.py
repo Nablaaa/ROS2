@@ -41,7 +41,7 @@ class CountUntilServer(Node):
         delay = goal_handle.request.delay
 
         # prepare feedback
-        feedback_msg = CountUntil.Feedback()
+        self.feedback_msg = CountUntil.Feedback()
 
         # prepare result
         result = CountUntil.Result()
@@ -64,8 +64,8 @@ class CountUntilServer(Node):
             self.get_logger().info(str(counter))
 
             # add and publish feedback
-            feedback_msg.current_number = counter
-            goal_handle.publish_feedback(feedback_msg)
+            self.feedback_msg.current_number = counter
+            goal_handle.publish_feedback(self.feedback_msg)
 
 
             
@@ -80,16 +80,12 @@ class CountUntilServer(Node):
     def cancel_callback(self, goal_handle: ServerGoalHandle):
         self.get_logger().info('Received cancel request')
 
-        # if the current number is below target number / 2 than it is not possible to cancel
-        # if goal_handle.is_active:
-            
-            # do NOT confuse feedback with feedback_msg
-            # if goal_handle.feedback.current_number < goal_handle.request.target_number / 2:
-            #     self.get_logger().info('Cancel request rejected, because a very important process is running')
-            #     return CancelResponse.REJECT
-            # else:
-        self.get_logger().info('Cancel request accepted')
-        return CancelResponse.ACCEPT # this will set "goal_handle.is_cancel_requested" to True
+        if self.feedback_msg.current_number < goal_handle.request.target_number/2:
+            self.get_logger().info('Cancel request rejected, because a very important process is running')
+            return CancelResponse.REJECT
+        else:
+            self.get_logger().info('Cancel request accepted')
+            return CancelResponse.ACCEPT # this will set "goal_handle.is_cancel_requested" to True
 
     
 
