@@ -299,6 +299,16 @@ So if I have a task that executes fast, than I use a service. If I have a task t
 
 Similar to the other processes, the actions need an interface and they have a name. There can be only one action-server per name, but the action-clients can send many goals to this action-server.
 
+Actions can be triggered from the command line with
+```bash
+ros2 action info <action_name> -t
+ros2 action send_goal <action_name> <interface_name> "{goal_name: 5}" --feedback
+
+# example
+ros2 action info /count_until -t
+ros2 action send_goal /count_until my_robot_interfaces/action/CountUntil "{"target_number": 10,"delay": 1}" --feedback
+```
+
 ## Multi-Threaded Executor
 In the Action-Cancel scenario, a "normal" spinning node would perform the "goal" callback before the spin continues. So in this time, the callback for "canceling" will not be active and it would be not possible to receive the request for canceling an action. The ROS 2 approach of solving this is a multi-threaded executor. An example is [here](src/my_py_pkg/my_py_pkg/count_until_action_server.py).
 
