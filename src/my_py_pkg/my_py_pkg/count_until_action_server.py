@@ -6,6 +6,10 @@ from rclpy.action import GoalResponse # to send feedback
 from rclpy.action.server import ServerGoalHandle # used when action is accepted
 from my_robot_interfaces.action import CountUntil # has CountUntil.Goal, .Feedback, .Result
 
+# imports for cancelling abilities
+from rclpy.executors import MultiThreadedExecutor
+from rclpy.action import CancelResponse
+from rclpy.callback_groups import ReentrantCallbackGroup
 
 class CountUntilServer(Node):
     def __init__(self):
@@ -16,7 +20,10 @@ class CountUntilServer(Node):
             CountUntil,
             'count_until',
             goal_callback=self.goal_callback, # received goals are processed
-            execute_callback=self.execute_callback) # and if accepted, than excecution happens here
+            execute_callback=self.execute_callback,# and if accepted, than excecution happens here
+            cancel_callback=self.cancel_callback, # callback to cancel the goal
+            callback_group=ReentrantCallbackGroup(), # to allow all callbacks run in parallel
+            ) 
         
 
     def goal_callback(self, goal_request: CountUntil.Goal):
@@ -36,32 +43,58 @@ class CountUntilServer(Node):
         # prepare feedback
         feedback_msg = CountUntil.Feedback()
 
+        # prepare result
+        result = CountUntil.Result()
+
+
         counter = 0
 
         self.get_logger().info(f'Start execution. Counting until {target_number}')
         for _ in range(target_number):
+
+
+            if goal_handle.is_cancel_requested:
+                self.get_logger().info('Goal canceled, now wheels could stop or robot could go back to the dock')
+                goal_handle.canceled()
+                
+                result.reached_number = counter
+                return result
+
             counter += 1
             self.get_logger().info(str(counter))
 
             # add and publish feedback
             feedback_msg.current_number = counter
             goal_handle.publish_feedback(feedback_msg)
+
+
             
             time.sleep(delay) # this is just here to simulate that an action needs time (different to a server)
 
         # once goal is reached
         goal_handle.succeed() # aborted and canceled are other options
 
-        # prepare result
-        result = CountUntil.Result()
         result.reached_number = counter
         return result
+    
+    def cancel_callback(self, goal_handle: ServerGoalHandle):
+        self.get_logger().info('Received cancel request')
+
+        # if the current number is below target number / 2 than it is not possible to cancel
+        if goal_handle.is_active:
+            if goal_handle.feedback_msg.current_number < goal_handle.request.target_number / 2:
+                self.get_logger().info('Cancel request rejected, because a very important process is running')
+                return CancelResponse.REJECT
+            else:
+                self.get_logger().info('Cancel request accepted')
+                return CancelResponse.ACCEPT # this will set "goal_handle.is_cancel_requested" to True
+
     
 
 def main(args=None):
     rclpy.init(args=args)
     node = CountUntilServer()
-    rclpy.spin(node)
+    rclpy.spin(node, executor=MultiThreadedExecutor()) 
     rclpy.shutdown()
 
 if __name__ == '__main__':
