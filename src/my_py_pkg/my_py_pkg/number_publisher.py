@@ -8,7 +8,13 @@ class NumberPublisherNode(Node):
     def __init__(self):
         super().__init__('publish_number')
         
-        self.number = 2
+
+        self.declare_parameter("number", 8)
+        self.declare_parameter("interval", 1.0)
+
+        self.number = self.get_parameter("number").value
+        self.interval = self.get_parameter("interval").value
+
 
         # publish to topic name 'number', with message type Int64 and queue size 10
         self.number_publisher = self.create_publisher(Int64, 'number', 10) 
@@ -16,9 +22,9 @@ class NumberPublisherNode(Node):
 
         self.hardware_status_publisher = self.create_publisher(HardwareStatus, 'hardware_status', 10)
 
-        self.timer = self.create_timer(0.5, self.publish_number)
+        self.timer = self.create_timer(self.interval, self.publish_number)
         
-        self.hardware_timer = self.create_timer(1.0, self.publish_hardware_status)
+        self.hardware_timer = self.create_timer(2, self.publish_hardware_status)
         
         self.get_logger().info("publishing starts")
 

@@ -331,3 +331,71 @@ callback_group=ReentrantCallbackGroup()
 # write cancel_callback with
 return CancelResponse.REJECT # or ACCEPT
 ```
+
+
+## Parameters
+Parameters are used to store information that is used by the node.
+They can be stored in a yaml file and called when starting a node.
+Just add them to a node with:
+```python
+self.declare_parameter("name", value)
+# example
+self.declare_parameter("my_parameter", 5.0)
+```
+The value is a default value and the dtype of the value is assigned
+automatically.
+
+To get the parameter, just type:
+```python
+self.number = self.get_parameter("my_parameter").value
+```
+For an example, see [number publisher](src/my_py_pkg/my_py_pkg/number_publisher.py).
+
+Changing parameters during node startup can be done in the terminal with:
+```bash
+ros2 run <pkg_name> <node_name> --ros-args -r __node:=<node_name> -p <parameter_name>:=value -p <another_parameter_name>:=value
+#example
+ros2 run my_py_pkg number_publisher --ros-args -r __node:=num_pub1 -p number:=3 -p interval:=2.0
+```
+
+or by using a yaml file. This file has a certain structure (indentation is 2 spaces):
+```yaml
+/node_name:
+  ros__parameters:
+    parameter_name: value
+    another_parameter_name: value
+
+# example
+/num_pub1: # this name here is what will appear in the rqt_graph
+  ros__parameters: # double underscore
+    number: 3
+    interval: 2.0 # take care that dtype is correct
+
+# i can also add a second publisher in the same yaml file
+/num_pub2:
+  ros__parameters:
+    number: 5
+    interval: 1.0
+```
+
+and then call the yaml file with
+```bash
+ros2 run <pkg_name> <node_name> --ros-args -r __node:=<node_name> --params-file path/to/params.yaml
+# example
+ros2 run my_py_pkg number_publisher --ros-args -r __node:=num_pub1 --params-file path/to/params.yaml
+ros2 run my_py_pkg number_publisher --ros-args -r __node:=num_pub2 --params-file path/to/params.yaml
+```
+
+### Export Parameters
+When I am running a node, I can see all parameters with 
+```bash
+ros2 param dump <node_name>
+```
+and than I can easily export them to a yaml file with
+```bash
+ros2 param dump <node_name> > path/to/params.yaml
+
+# example
+ros2 param dump /num_pub1 > ~/params.yaml
+```
+which would save the "params.yaml" file in my home directory.

@@ -1,0 +1,9 @@
+/num_pub1: # this name here is what will appear in the rqt_graph
+  ros__parameters: # double underscore
+    number: 12
+    interval: 2.0 # take care that dtype is correct
+
+/num_pub2:
+  ros__parameters:
+    number: 5
+    interval: 1.0
