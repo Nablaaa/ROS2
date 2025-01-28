@@ -399,3 +399,24 @@ ros2 param dump <node_name> > path/to/params.yaml
 ros2 param dump /num_pub1 > ~/params.yaml
 ```
 which would save the "params.yaml" file in my home directory.
+
+### Change Parameters during runtime 
+I can change parameters during runtime by introducing a parameter callback. This is very simple to do and works like imagined.
+Just use:
+
+```python
+from rclpy.parameter import Parameter
+
+self.add_post_set_parameters_callback(self.parameters_callback)
+
+def parameters_callback(self, params: list[Parameter]):
+    for param in params:
+        if param.name == "my_parameter":
+            self.my_parameter = param.value
+```
+
+As an example, check out the [number_publisher.py](src/my_py_pkg/my_py_pkg/number_publisher.py) for an example. There you can set the number easily now with:
+
+```bash
+ros2 param set /number_publisher number 3
+```

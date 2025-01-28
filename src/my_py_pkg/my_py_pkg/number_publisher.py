@@ -3,6 +3,7 @@ import rclpy
 from rclpy.node import Node
 from example_interfaces.msg import Int64, Float64 # here i import an interface
 from my_robot_interfaces.msg import HardwareStatus
+from rclpy.parameter import Parameter
 
 class NumberPublisherNode(Node):
     def __init__(self):
@@ -28,6 +29,15 @@ class NumberPublisherNode(Node):
         
         self.get_logger().info("publishing starts")
 
+        # make parameter callback in case i want to change the number parameter
+        self.add_post_set_parameters_callback(self.parameter_callback)
+
+
+    def parameter_callback(self, params: list[Parameter]):
+        for param in params:
+            if param.name == "number":
+                self.number = param.value
+                self.get_logger().info("Number has been changed to: " + str(self.number))
 
 
     def publish_number(self):
