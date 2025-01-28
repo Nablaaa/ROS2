@@ -5,7 +5,7 @@ from geometry_msgs.msg import Twist
 from turtlesim.msg import Pose, Color
 from turtlesim.srv import SetPen
 from my_turtle_interfaces.srv import ToggleActiveState
-
+from rclpy.parameter import Parameter
 
 
 
@@ -13,7 +13,24 @@ class RunCircles(Node):
     def __init__(self):
         super().__init__('run_circles') 
 
+
+        # color parameters
+        self.declare_parameter("color_right", [255, 255, 255])
+        self.declare_parameter("color_left", [0, 255, 0])
+
+        self.color_right = self.get_parameter("color_right").value
+        self.color_left = self.get_parameter("color_left").value
+
+
+        self.declare_parameter("turtle_velocity", 1.0)  
+        self.turtle_velocity = self.get_parameter("turtle_velocity").value
+
+        # make parameter callback in case i want to change the number parameter
+        self.add_post_set_parameters_callback(self.parameter_callback)
+
+
         self.screen_center_x = 5.5
+
 
         # publisher cmd_Vel
         self.pub_velocity = self.create_publisher(Twist, 'turtle1/cmd_vel', 10)
@@ -23,15 +40,34 @@ class RunCircles(Node):
         
         self.sub_position = self.create_subscription(Pose, 'turtle1/pose', self.ControlTurtle, 10)
 
+
+        self.send_velocity = True
+
         self.toggle_state_service = self.create_service(ToggleActiveState, 'toggle_active_state', self.callback_toggle_active_state)
 
         self.client_pen = self.create_client(SetPen, 'turtle1/set_pen')
 
 
-        self.send_velocity = True
         self.prev_x = 0.0
 
-        self.get_logger().info(f"Please toggle active state to start the turtle.")
+        self.get_logger().info(f"Hi, you can toggle off/on the turtle with the my_turtle_interfaces server.")
+
+
+
+    def parameter_callback(self, params: list[Parameter]):
+        for param in params:
+            if param.name == "color_right":
+                self.color_right = param.value
+                self.get_logger().info("color right has been changed to " + str(self.color_right))
+
+            if param.name == "color_left":
+                self.color_left = param.value
+                self.get_logger().info("color left has been changed to " + str(self.color_left))
+
+            if param.name == "turtle_velocity":
+                self.turtle_velocity = param.value
+                self.get_logger().info("turtle velocity has been changed to " + str(self.turtle_velocity))
+
 
 
     def ControlTurtle(self, pose: Pose):
@@ -39,38 +75,42 @@ class RunCircles(Node):
         while not self.client_pen.wait_for_service(timeout_sec=1.0):
             self.get_logger().warn('service not available, waiting again...')
         
+        if not self.send_velocity:
+            return
+        
+
         # get position
         x = pose.x
 
         vel_msg = Twist()
-        vel_msg.linear.x = 1.0
-        vel_msg.angular.z = 1.0
 
         if x < self.screen_center_x and self.prev_x >= self.screen_center_x:
             self.prev_x = x
 
-            self.call_vel(1.0, 1.0)
-            self.call_pen(0, 255, 0, 2)
+            self.linear = self.turtle_velocity
+            self.angular = self.turtle_velocity
+            
+            # unpack color parameters from self.color_left
+            self.call_pen(*self.color_left, 2)
+
         
         if x > self.screen_center_x and self.prev_x <= self.screen_center_x:
             self.prev_x = x
-            vel_msg.linear.x = 2.0
-            vel_msg.angular.z = 2.0
+            self.linear = 4.0 * self.turtle_velocity
+            self.angular = 4.0 * self.turtle_velocity
 
-            self.call_vel(2.0, 2.0)
-            self.call_pen(255, 255, 255, 5)
-
-        if self.send_velocity:
-            self.pub_velocity.publish(vel_msg)
+            self.call_pen(*self.color_right, 5)
 
 
-    def call_vel(self, linear, angular):
-        vel_msg = Twist()
+        self.call_vel(vel_msg, self.linear, self.angular)
+
+
+    def call_vel(self, vel_msg, linear, angular):
+        
         vel_msg.linear.x = linear
         vel_msg.angular.z = angular
 
-        if self.send_velocity:
-            self.pub_velocity.publish(vel_msg)
+        self.pub_velocity.publish(vel_msg)
 
 
     def call_pen(self, r, g, b, width):
@@ -107,7 +147,7 @@ class RunCircles(Node):
             
             self.send_velocity = False
             response.success = True
-            response.message = "Deactvate turtle"
+            response.message = "Deactivate turtle"
         return response
 
 
