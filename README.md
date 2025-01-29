@@ -480,3 +480,16 @@ cd my_robot_bringup/launch/
 touch number_app.launch.py
 ```
 And the launch file would look like [this](src/my_robot_bringup/launch/number_app.launch.py).
+
+
+### Launch a launch file from another launch file
+XML launch files are way more easy and readable than python launch files. So it is a good idea to use XML launch files. Sometimes it needs special python functionalities for certain launch files. In these scenarios, it can be easier to write ONE launch file for this specific launch, but all other launches happen from the XML file. And here comes the clue. The python launch file can than just be launched from the XML launch file with:
+
+```xml
+<launch>
+    <include file="$(find-pkg-share my_robot_bringup)/launch/number_app.launch.py"/>
+</launch>
+```
+
+It is as simple as thiss <br>
+The other way around would also work, but it is unnecessary complicated and not recommended.
