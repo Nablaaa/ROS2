@@ -420,3 +420,32 @@ As an example, check out the [number_publisher.py](src/my_py_pkg/my_py_pkg/numbe
 ```bash
 ros2 param set /number_publisher number 3
 ```
+
+
+## Launch Files 
+First tip: Always create a new package for launch files to not end up in the dependency hell!
+Normally these launch files are called "robot_name"_bringup
+
+```bash
+ros2 pkg create my_robot_bringup --build-type ament_cmake 
+
+# now remove unused directories
+cd my_robot_bringup
+rm -r src/ include/
+
+# add launch directory
+mkdir launch
+```
+
+The CmakeLists.txt file has to be modified to include the launch directory (for colcon build). This file will look like this:
+```bash
+
+# find dependencies
+find_package(ament_cmake REQUIRED)
+install(DIRECTORY
+  launch
+  DESTINATION share/${PROJECT_NAME}
+)
+ament_package()
+```
+
