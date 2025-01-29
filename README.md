@@ -449,3 +449,34 @@ install(DIRECTORY
 ament_package()
 ```
 
+Now create a `xml` launch file with
+```bash
+cd my_robot_bringup/launch/
+touch number_app.launch.xml
+```
+
+And create a launch file that starts whatever node I like:
+```xml
+<launch>
+
+    <node pkg="my_py_pkg" exec="number_publisher"/>
+    <node pkg="my_py_pkg" exec="number_counter"/>
+    
+</launch>
+```
+
+Now colcon build and source from the src directory.
+
+The file can than be started with
+```bash
+ros2 launch <package_name> <launch_file>
+ros2 launch my_robot_bringup number_app.launch.xml
+```
+
+
+I could also create a `python` launch file with
+```bash
+cd my_robot_bringup/launch/
+touch number_app.launch.py
+```
+And the launch file would look like [this](src/my_robot_bringup/launch/number_app.launch.py).
