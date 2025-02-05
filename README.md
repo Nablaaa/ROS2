@@ -538,3 +538,23 @@ Than change the xml file to include the parameter file:
 ```
 
 Important is, that the "name" of the node in the xml file is equal to the "name" of the node in the yaml file. If they do not match, the parameters will not be loaded but there will be no error message.
+
+## Namespaces
+Namespaces are used to group nodes together. This is useful when I have my package developed and want to apply it on 2 robots (e.g. 2 turtles). Than I can have my velocity controller and so on, but I can have them in different namespaces. This is useful to avoid name conflicts and to have a better overview of the nodes. So for example, I would have /turtle1/velocity and /turtle2/velocity. This is done with the following command:
+```bash
+ros2 run <pkg_name> <node_name> --ros-args -r __ns:=<namespace>
+
+# example
+ros2 run my_py_pkg number_publisher --ros-args -r __ns:=/robot1
+```
+So very similar to -r __node we also can remap the namespace.  In the xml file, it is straightforward as well, with 
+```xml
+<launch>
+    <node pkg="my_py_pkg" exec="number_publisher" name="i_am_publishing" namespace="robot1" >
+    </node> 
+</launch>
+```
+
+`IMPORTANT`: The namespace also changes the topic namespace, which means that I also have to change all the subscribers and publishers to the desired namespace. 
+
+`IMPORTANT`: If I refer to YAML files, than I also have to modify the namespace there, so for example "/num_pub1:" becomes "/namespace1/num_pub1:"
