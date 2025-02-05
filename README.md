@@ -513,3 +513,28 @@ It is possible to modify the node name, the topic names and also the parameters 
 It is just important to remember to change topic names for all sending and receiving topics, so that they can still communicate properly with each other.
 
 Obviously, we can also just create YAML parameter files like we did before and call them from the xml file. For this, we just have to make sure to locate these YAML files inside the "_bringup" package and include them also in the CMakeLists.txt file.
+
+```bash
+cd my_robot_bringup
+mkdir config
+```
+
+And then add the following lines to the CMakeLists.txt file:
+```bash
+install(DIRECTORY
+  launch
+  config
+  DESTINATION share/${PROJECT_NAME}
+)
+```
+
+Than change the xml file to include the parameter file:
+```xml
+<launch>
+    <node pkg="my_py_pkg" exec="number_publisher" name="i_am_publishing" >
+        <param from="$(find-pkg-share my_robot_bringup)/config/number_params.yaml"/>
+    </node>
+</launch>
+```
+
+Important is, that the "name" of the node in the xml file is equal to the "name" of the node in the yaml file. If they do not match, the parameters will not be loaded but there will be no error message.
