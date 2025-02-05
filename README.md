@@ -493,3 +493,23 @@ XML launch files are way more easy and readable than python launch files. So it 
 
 It is as simple as thiss <br>
 The other way around would also work, but it is unnecessary complicated and not recommended.
+
+### Modify parameters during launch
+It is possible to modify the node name, the topic names and also the parameters during the launch. This is done with the following command:
+```xml
+<launch>
+
+    <node pkg="my_py_pkg" exec="number_publisher" name="i_am_publishing" >
+
+        <remap from="number_float" to="remap_number_float"/>
+
+        <param name="number" value="5"/>
+        <param name="interval" value="2.0"/>
+
+    </node>    
+</launch>
+```
+
+It is just important to remember to change topic names for all sending and receiving topics, so that they can still communicate properly with each other.
+
+Obviously, we can also just create YAML parameter files like we did before and call them from the xml file. For this, we just have to make sure to locate these YAML files inside the "_bringup" package and include them also in the CMakeLists.txt file.

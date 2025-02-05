@@ -1,6 +1,18 @@
 <launch>
 
-    <node pkg="my_py_pkg" exec="number_publisher"/>
-    <node pkg="my_py_pkg" exec="number_counter"/>
+    <node pkg="my_py_pkg" exec="number_publisher" name="i_am_publishing" >
+
+        <remap from="number_float" to="remap_number_float"/>
+
+        <param name="number" value="5"/>
+        <param name="interval" value="2.0"/>
+
+    </node>
+
+    <node pkg="my_py_pkg" exec="number_counter" name="i_m_counting">
+    
+        <remap from="number_float" to="remap_number_float"/>
+
+    </node>
     
 </launch>
