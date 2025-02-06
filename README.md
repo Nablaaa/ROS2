@@ -427,6 +427,7 @@ First tip: Always create a new package for launch files to not end up in the dep
 Normally these launch files are called "robot_name"_bringup
 
 ```bash
+cd src/
 ros2 pkg create my_robot_bringup --build-type ament_cmake 
 
 # now remove unused directories
