@@ -1,0 +1,32 @@
+/fast/run_circles:
+  ros__parameters:
+    color_left:
+    - 0
+    - 0
+    - 0
+    color_right:
+    - 255
+    - 255
+    - 255
+    start_type_description_service: true
+    turtle_velocity: 1.5
+    use_sim_time: false
+
+
+/slow/run_circles:
+  ros__parameters:
+    color_left:
+    - 255
+    - 255
+    - 255
+    color_right:
+    - 0
+    - 0
+    - 0
+
+    start_type_description_service: true
+    turtle_velocity: 0.5
+    use_sim_time: false
+
+
+

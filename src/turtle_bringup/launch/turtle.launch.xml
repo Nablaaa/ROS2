@@ -1,0 +1,27 @@
+<launch>
+
+    <node pkg="turtlesim" exec="turtlesim_node" namespace="slow">
+        <param name="background_b" value="100"/>
+        <param name="background_r" value="100"/>
+        <param name="background_g" value="100"/>
+        
+    </node>
+
+    <node pkg="turtle_controller" exec="run_circles" namespace="slow">
+        <param from="$(find-pkg-share turtle_bringup)/config/turtle_params.yaml"/> 
+    </node>
+    
+
+
+    <node pkg="turtlesim" exec="turtlesim_node" namespace="fast">
+        <param name="background_b" value="100"/>
+        <param name="background_r" value="100"/>
+        <param name="background_g" value="100"/>
+        
+    </node>
+
+    <node pkg="turtle_controller" exec="run_circles" namespace="fast">
+        <param from="$(find-pkg-share turtle_bringup)/config/turtle_params.yaml"/> 
+    </node>
+    
+</launch>
