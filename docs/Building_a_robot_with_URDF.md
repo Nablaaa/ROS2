@@ -74,3 +74,38 @@ Calers can be added as material tags. First I have to define the material tag an
   <material name="blue"/>
 </visual>
 ```
+
+## Join Links
+`This process will create troubles` if not done carefully.
+
+Try to follow these 5 steps:
+
+### Step 1 - Define the new link with a proper name
+```xml
+# define color if necessary
+
+<link name="shoulder_link">
+<visual>
+    <geometry>
+        <cylinder radius="0.1" length="0.3"/>
+    </geometry>
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <material name="gray"/>
+</visual>
+</link>
+```
+
+### Step 2 - Define the joint
+```xml
+<joint name="base_shoulder_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="shoulder_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+</joint>
+```
+The origin describes here the origin of the child link relative to the origin of the parent link. The name is custom and the type can be changes (Step 4).
+![joint](/docs/media/add_joint.png)
+When I would set the xyz origin differently, the result would be a shift between the origins:
+![joint](/docs/media/move_joint_origin.png)
+
+
