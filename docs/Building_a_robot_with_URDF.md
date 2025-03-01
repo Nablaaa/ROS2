@@ -7,7 +7,7 @@ Set up an URDF file with
 ```bash
 touch my_robot_name.urdf
 ```
-and write the following minimal code in the file (the file is [here](urdf/my_robot.urdf)):
+and write the following minimal code in the file (the file is [here](urdf/my_robot_preliminary.urdf)):
 ```xml
 <?xml version="1.0"?>
 <robot name="my_robot_name">
@@ -125,3 +125,44 @@ In case, you move the visual origin, than you will end up with something wrong, 
 
 
 ### Step 4 - Set joint type
+There are differnt type of joints, depending on the situation. For example, when adding a camera on top of the robot, the position of the camera is fixed. But when I have a robotic arm, than the joints should be able to move. The types are:
+
+- fixed (no movement, camera)
+- revolute (rotation with min and max angle, arms)
+- continuous (rotation without limits, wheels)
+- prismatic (translation with min and max and no rotation, linear actuators)
+
+Full list: [ROS Documentation](https://wiki.ros.org/urdf/XML/joint)
+
+So for example in our [my_robot.urdf file](urdf/my_robot.urdf), we can change the joint type to revolute:
+```xml
+<joint name="base_shoulder_joint" type="revolute">
+    <parent link="base_link"/>
+    <child link="shoulder_link"/>
+    <origin xyz="0 0 0.2" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.14" upper="3.14" effort="100" velocity="100"/>
+</joint>
+```
+Here the rotation happens along the axis z within the limits of +-pi. The limits for effort and velocity are normally overwrtiten by other ROS Nodes, so just set them to defaults of 100.
+
+This will directly allow us to rotate the shoulder (in the visualization).
+![rotate shoulder](/docs/media/rotate_shoulder.png)
+
+### Step 5 - Fix the VISUAL origin of part
+Normally, the parts (box, cylinder, sphere,...) are constructed symmetrically around the origin. We do not want to have it like this. We want them to be at a physical proper location (so that one part is NOT inside another part, since this would not work out in a real world). Thats where the VISUAL modification comes in play. Just set them accordingly. Here our cylinder is 0.3 m high, so the offset should be by 0.15 m in z direction.
+```xml
+<visual>
+    <geometry>
+        <cylinder radius="0.1" length="0.3"/>
+    </geometry>
+    <origin xyz="0 0 0.15" rpy="0 0 0" />
+    <material name="gray"/>
+</visual>
+```
+![final urdf](/docs/media/final_urdf.png)
+
+This is not always necessary, for example when working with wheels. There it would make more sense to shift the JOINT origin higher and have the VISUAL origin at the center of the wheel (0 0 0). This makes sense since the wheel rotates around its center.
+
+## Conclusion
+Thats it! The way to add ONE part to the URDF with correct joints and origins. Just repeat this for every new part.
