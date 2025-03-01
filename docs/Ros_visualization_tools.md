@@ -25,5 +25,16 @@ To talk about a robot in a simulations, we need to know the 3 words "Link", "Fra
 
 ## Logic
 Behind the visualization is actually exactly the logic from [ROS 2](/Ros_terminology.md). Rviz is a node and there is communication between nodes via topics and services. So for example there is a topic for the joint states that interacts with the "Joint State Publisher" and communicates the state of a joint to the rviz node.
-![rqt_graph_rviz](media/rqt_graph_rviz.png)
+![rqt_graph_rviz](media/rqt_graph_rviz.png).
+This can be observed with
+```bash
+sudo apt install ros-<distro>-tf2-tools
+ros2 run tf2_tools view_frames
+```
+This saves a pdf file with the frames and the TFs like [here](docs/tf_simulation/frames.pdf)
+There we clearly see that, when we are interested in the left wheel relative to the base, we would have to compute the transformations from:
+- base to left_leg
+- left_leg to left_base
+- left_base to left_front_wheel
 
+These are 3 transformations that have to be computed for every timestep. That calculation is performed by the tf2 library.
