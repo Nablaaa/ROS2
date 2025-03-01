@@ -25,7 +25,7 @@
         <geometry>
             <cylinder radius="0.1" length="0.3"/>
         </geometry>
-        <origin xyz="0 0 0" rpy="0 0 0" />
+        <origin xyz="0 0 0.3" rpy="0 0 0" />
         <material name="gray"/>
     </visual>
     </link>
@@ -33,7 +33,7 @@
     <joint name="base_shoulder_joint" type="fixed">
         <parent link="base_link"/>
         <child link="shoulder_link"/>
-        <origin xyz="0 0.5 0.3" rpy="0 0 0"/>
+        <origin xyz="0 0 0.2" rpy="0 0 0"/>
     </joint>
 
 </robot>

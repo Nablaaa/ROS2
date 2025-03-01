@@ -108,4 +108,20 @@ The origin describes here the origin of the child link relative to the origin of
 When I would set the xyz origin differently, the result would be a shift between the origins:
 ![joint](/docs/media/move_joint_origin.png)
 
+This is exactly the next step.
 
+### Step 3 - Move the origin of the child link to a proper place
+`HERE, the most errors happen`. To get less confused, make sure to always first move the origin of the JOINT, before changing the origins of the VISUALs. Because the joint is the one that defines the location of the child link relative to the parent link.
+
+To get less confused, switch off the "visual element" in the RVIZ Display and just think about, where a joint should be placed.
+
+![joint](/docs/media/not_visualize_link.png)
+
+Here, I want to place the link of the shoulder on top of the box, in the middle, so it should be lifted by the height of the box, which is 0.2 m
+![joint](/docs/media/shoulder_link.png)
+
+In case, you move the visual origin, than you will end up with something wrong, like here:
+![wrong origin moved](/docs/media/error_moving_visual_origin.png), which is not exactly what we wanted to achieve. (note that in this image, the joint origin is correct and the visual origin is applied afterward, important for us in this step is the CORRECT location of the JOINT origin)
+
+
+### Step 4 - Set joint type
