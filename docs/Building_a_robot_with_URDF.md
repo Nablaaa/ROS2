@@ -179,7 +179,8 @@ Do this by adding a NON-Visual link.
     <origin xyz="0 0 0.1" rpy="0 0 0"/>
 </joint>
 ```
-As you can see, the base_footprint (without _link suffix) is created and the new parent for the base_link. Also the origin is shifted to the origin of the base_link (which is in this example (0 0 0.1) in z direction). The base_footprint joint will be below the base_link, even though z=0.1 is set. (Actually I am confused why it is 0.1 and not -0.1 since I thought the joint should be shifted down, but if I try -0.1 it shifts the joint up, so it seems to be correct like this).
+As you can see, the base_footprint (without _link suffix) is created and the new parent for the base_link. Since the footprint is the parent, it means that the JOINT describes the shift of the child to the parent. The shift in z=0.1 than means that the body of the robot is higher (0.1 m above) than the virtual footprint (which makes sense, since the wheels are below the body and the footprint should be a projection to the lowest point).
+
 Try it out with:
 ```bash
 ros2 launch urdf_tutorial display.launch.py model:=/home/eric/Desktop/GitHub/ros2_ws/urdf/ros_book_car.urdf
