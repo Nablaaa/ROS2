@@ -167,6 +167,25 @@ This is not always necessary, for example when working with wheels. There it wou
 ## Conclusion
 Thats it! The way to add ONE part to the URDF with correct joints and origins. Just repeat this for every new part.
 
+## Tipp
+It makes sense to have the base of the robot being sitting at the (0 0 0) position. But then, if I add something below (e.g. wheels), then it is a good practice to create something called a "virtual link" that projects the center of the robot to this position. This makes it easier in `navigation` since I can project the position of all (vacuum cleaning) robots to a 2D map, which allows easier navigation than working in a 3D environment. <br>
+Do this by adding a NON-Visual link.
+```xml
+<link name="base_footprint" />
+
+<joint name="base_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0.1" rpy="0 0 0"/>
+</joint>
+```
+As you can see, the base_footprint (without _link suffix) is created and the new parent for the base_link. Also the origin is shifted to the origin of the base_link (which is in this example (0 0 0.1) in z direction). 
+Try it out with:
+```bash
+ros2 launch urdf_tutorial display.launch.py model:=/home/eric/Desktop/GitHub/ros2_ws/urdf/ros_book_car.urdf
+```
+
+
 ## Adding Wheels
 An example of adding continuous wheels is in the [robot car example](urdf/robot_car.urdf). There the important things are:
 - JOINT origin is also shifted by the thickness of the wheel (additionally to the position shift), so that the wheel has the origin in the center and NOT overlaps with the body
