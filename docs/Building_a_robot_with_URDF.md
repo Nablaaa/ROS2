@@ -166,3 +166,8 @@ This is not always necessary, for example when working with wheels. There it wou
 
 ## Conclusion
 Thats it! The way to add ONE part to the URDF with correct joints and origins. Just repeat this for every new part.
+
+## Adding Wheels
+An example of adding continuous wheels is in the [robot car example](urdf/robot_car.urdf). There the important things are:
+- JOINT origin is also shifted by the thickness of the wheel (additionally to the position shift), so that the wheel has the origin in the center and NOT overlaps with the body
+- JOINT origin rotation is (0 0 0) and does not give the right orientation to the compartment (this is done in the VISUAlS part only. `I thought differently first`) -> this makes sure that the rotation axis is around the green y axis and not around another axis
