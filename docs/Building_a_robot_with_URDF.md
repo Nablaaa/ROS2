@@ -186,6 +186,20 @@ Try it out with:
 ros2 launch urdf_tutorial display.launch.py model:=/home/eric/Desktop/GitHub/ros2_ws/urdf/ros_book_car.urdf
 ```
 
+In the [robot_car example](urdf/robot_car.urdf), the problem was solved differently (by shifting the virtual link of the body up), but this is not the best practice! It was for training purposes only.
+
+Here is a bad example (body VIRTUAL is shifted ABOVE the plane to z>0)
+![bad example](/docs/media/bad_example.png)
+```bash
+ros2 launch urdf_tutorial display.launch.py model:=/home/eric/Desktop/GitHub/ros2_ws/urdf/robot_car.urdf
+```
+
+Here is the correct example (footprint is introduced and body is lying on the plane at z=0)
+![good example](/docs/media/good_example.png)
+```bash
+ros2 launch urdf_tutorial display.launch.py model:=/home/eric/Desktop/GitHub/ros2_ws/urdf/ros_book_car.urdf
+```
+
 
 ## Adding Wheels
 An example of adding continuous wheels is in the [robot car example](urdf/robot_car.urdf). There the important things are:
