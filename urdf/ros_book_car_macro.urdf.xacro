@@ -46,17 +46,17 @@
     <xacro:wheel_link prefix="left" />
 
     <!-- make wheel joint macro -->
-    <xacro:macro name="wheel_joint" params="prefix pos">
+    <xacro:macro name="wheel_joint" params="prefix sign">
         <joint name="base_${prefix}_wheel_joint" type="continuous">
             <parent link="base_link" />
             <child link="${prefix}_wheel_link" />
-            <origin xyz="${-base_length/4.0} ${pos * (base_width + wheel_length)/2.0} 0" rpy="0 0 0" />
+            <origin xyz="${-base_length/4.0} ${sign * (base_width + wheel_length)/2.0} 0" rpy="0 0 0" />
             <axis xyz="0 1 0" />
         </joint>
     </xacro:macro>
 
-    <xacro:wheel_joint prefix="right" pos="-1.0" />
-    <xacro:wheel_joint prefix="left" pos="1.0" />
+    <xacro:wheel_joint prefix="right" sign="-1.0" />
+    <xacro:wheel_joint prefix="left" sign="1.0" />
 
 
     <link name="caster_wheel_link">
