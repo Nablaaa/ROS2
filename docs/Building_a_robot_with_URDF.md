@@ -30,7 +30,7 @@ Here I can use CAD software to create bars or existing shapes like boxes, cylind
 The first link has per convention the name `base_link`. The geometry part defines the shape of the link. The origin part defines the position and orientation of the link. The `rpy` (roll, pitch, yaw) is the rotation around the x, y and z axis. The origin has an offset of 0.1 m in z direction (because otherwise the box would be symmetrically half in the ground like in unity when I create a new object).
 
 ## Visualization
-This just works exactly like in [ROS Visualization](docs/Ros_visualization_tools.md), by typing
+This just works exactly like in [ROS Visualization](./Ros_visualization_tools.md), by typing
 ```bash
 ros2 launch urdf_tutorial display.launch.py model:=/home/eric/Desktop/GitHub/ros2_ws/urdf/my_robot.urdf
 ```
@@ -205,3 +205,6 @@ ros2 launch urdf_tutorial display.launch.py model:=/home/eric/Desktop/GitHub/ros
 An example of adding continuous wheels is in the [robot car example](urdf/robot_car.urdf). There the important things are:
 - JOINT origin is also shifted by the thickness of the wheel (additionally to the position shift), so that the wheel has the origin in the center and NOT overlaps with the body
 - JOINT origin rotation is (0 0 0) and does not give the right orientation to the compartment (this is done in the VISUAlS part only. `I thought differently first`) -> this makes sure that the rotation axis is around the green y axis and not around another axis
+
+# Further Reading
+- [URDF Documentation](./Improving_URDF_with_Xacro.md)
