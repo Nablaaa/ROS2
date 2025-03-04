@@ -40,6 +40,7 @@ It also allows to have access to pi as
 ```xml
 <origin xyz="0 0 0" rpy="${pi/2.0} 0 0" />
 ```
+This can be seen in the example [here](urdf/ros_book_car.urdf.xacro)
 
 ### Macros
 Macros are functions that can be defined in the xacro file. They are defined with:
@@ -74,5 +75,5 @@ and than to call the macro i have to use:
 
 <xacro:wheel name="front_left" radius="0.1" width="0.05"/>
 <xacro:wheel name="front_right" radius="0.1" width="0.05"/>
-
 ```
+This is shown in the example [here](../urdf/ros_book_car_macro.urdf.xacro)
