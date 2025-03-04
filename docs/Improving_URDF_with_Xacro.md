@@ -20,6 +20,7 @@ Now launch the file with:
 ros2 launch urdf_tutorial display.launch.py model:=path/to/model.xacro
 ```
 
+### Variables
 Now xacro offer to define variables (so called `properties`) with the following syntax:
 ```xml
 <robot name="ros_book_car" xmlns:xacro="http://www.ros.org/wiki/xacro">
@@ -38,4 +39,40 @@ And then properties can be called with
 It also allows to have access to pi as
 ```xml
 <origin xyz="0 0 0" rpy="${pi/2.0} 0 0" />
+```
+
+### Macros
+Macros are functions that can be defined in the xacro file. They are defined with:
+```xml
+<xacro:macro name="wheel" params="name">
+    <link name="${name}_link">
+        <visual>
+            <geometry>
+                <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+            </geometry>
+        </visual>
+    </link>
+</xacro:macro>
+```
+
+I can have as many parameters as I want, they just have to be separated with a SPACE. Like this:
+```xml
+<xacro:macro name="wheel" params="name radius width">
+    <link name="${name}_link">
+        <visual>
+            <geometry>
+                <cylinder radius="${radius}" length="${width}"/>
+            </geometry>
+        </visual>
+    </link>
+</xacro:macro>
+``` 
+
+and than to call the macro i have to use:
+```xml
+<xacro:MACRONAME PARAMETERNAME="Value"/>
+
+<xacro:wheel name="front_left" radius="0.1" width="0.05"/>
+<xacro:wheel name="front_right" radius="0.1" width="0.05"/>
+
 ```
