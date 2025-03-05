@@ -77,3 +77,8 @@ and than to call the macro i have to use:
 <xacro:wheel name="front_right" radius="0.1" width="0.05"/>
 ```
 This is shown in the example [here](../urdf/ros_book_car_macro.urdf.xacro)
+
+
+
+### Complex Robots
+Xacro allows to build complex robots as a combination of several robots xacro files. So for example one robot is driving and another is a robotic arm. Now the arm can be merged with the driving robot by including the arm xacro file in the driving robot xacro file. For example take a look in the folder [multi_file_robot](../urdf/multi_file_robot), where we split up materials in common properties, the robot base in mobile base and where we use my_robot as a main file to include the other files.
