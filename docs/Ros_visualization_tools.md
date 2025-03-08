@@ -19,6 +19,7 @@ ros2 launch urdf_tutorial display.launch.py model:=/opt/ros/jazzy/share/urdf_tut
 ```
 P.S. make sure to use the absolute path to the model file.
 
+
 Once the RViz is open, you can see the robot model and the TFs. The RobotModel consist of rigid parts (the white and blue parts) and these rigid parts are controlled by the Transformations (TFs), which are the sticks and vectors in the image.
 
 To talk about a robot in a simulations, we need to know the 3 words "Link", "Frame" and "TF". The "Link" is a rigid part of the robot, the "Frame" is the origine of a link and the axis in a coordinate system and the "TF" is a relationship/transformation between two frames.

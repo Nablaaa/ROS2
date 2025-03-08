@@ -67,3 +67,6 @@ In this repository, I cover the topics:
 2. [ROS Visualization Tools](docs/Ros_visualization_tools.md)
 3. [Building a Robot with URDF](docs/Building_a_robot_with_URDF.md)
 4. [Improving the URDF file with Xacro](docs/Improving_URDF_with_Xacro.md)
+
+
+And this is enough for getting started with ROS 2. The following topics, about Gazebo and Robot simulations will happen in a new workspace, since it makes sense to seperate workspaces for every robot we build. This workspace is already quite full with turtlesim and my_robot_controller, as well as the URDF files on top of it. So lets start a new workspace for the next robot.

@@ -34,6 +34,8 @@ This just works exactly like in [ROS Visualization](./Ros_visualization_tools.md
 ```bash
 ros2 launch urdf_tutorial display.launch.py model:=/home/eric/Desktop/GitHub/ros2_ws/urdf/my_robot.urdf
 ```
+Note: This uses the urdf_tutorial package for visualization. Later, we learn how to use other tools.
+
 The visualization looks like this:
 ![URDF](/docs/media/box_URDF.png)
 
