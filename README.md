@@ -60,7 +60,14 @@ source ~/.bashrc
 # there must be a line:
 source ~/path/to/ros2_ws/install/setup.bash
 ```
-
+like
+```bash
+# start ros2
+source /opt/ros/jazzy/setup.bash
+source /usr/share/colcon_cd/function/colcon_cd-argcomplete.bash
+# install my ROS workspace
+source ~/Desktop/GitHub/ros2_ws/install/setup.bash
+```
 
 In this repository, I cover the topics:
 1. [ROS Terminology, Concepts and Programming](docs/Ros_terminology.md)
@@ -70,3 +77,22 @@ In this repository, I cover the topics:
 
 
 And this is enough for getting started with ROS 2. The following topics, about Gazebo and Robot simulations will happen in a new workspace, since it makes sense to seperate workspaces for every robot we build. This workspace is already quite full with turtlesim and my_robot_controller, as well as the URDF files on top of it. So lets start a new workspace for the next robot.
+
+
+# IMPORTANT LAST NOTE
+The workspace, we are working with, is sourced in .bashrc when opening a terminal. 
+
+```bash
+# start ros2
+source /opt/ros/jazzy/setup.bash
+source /usr/share/colcon_cd/function/colcon_cd-argcomplete.bash
+# install my ROS workspace
+source ~/Desktop/GitHub/ros2_ws/install/setup.bash
+```
+
+Never source 2 workspaces together, so make sure to comment out the old workspace, when starting a new one. 
+
+```bash
+# source ~/Desktop/GitHub/ros2_ws/install/setup.bash
+source ~/Desktop/GitHub/my_new_workspace_name/install/setup.bash
+```
